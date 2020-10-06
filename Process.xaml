@@ -1,0 +1,1934 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Transaction item to be processed." Name="in_TransactionItem" Type="InArgument(sd:DataTable)" />
+    <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>941.333333333333,6330.66666666667</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ProcessTransaction_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>System.Globalization</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="951.333333333333,6266" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:Comment DisplayName="Comment (placeholder)" sap:VirtualizedContainerService.HintSize="909.333333333333,55.3333333333333" sap2010:WorkflowViewState.IdRef="Comment_1" Text="//  Invoke steps of the process" />
+    <Sequence sap:VirtualizedContainerService.HintSize="909.333333333333,5610.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Sequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="vProcessingDate" />
+        <Variable x:TypeArguments="x:String" Name="vBsDate" />
+      </Sequence.Variables>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+      <Assign sap:VirtualizedContainerService.HintSize="867.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[vProcessingDate]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[in_Config("vProcessingDate").ToString.Replace("/",string.Empty)]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Switch x:TypeArguments="x:String" DisplayName="Switch" Expression="[Date.ParseExact(in_Config(&quot;vProcessingDate&quot;).ToString, “dd/MM/yyyy”, System.Globalization.CultureInfo.InvariantCulture).ToString(&quot;dddd&quot;)]" sap:VirtualizedContainerService.HintSize="867.333333333333,5416.66666666667" sap2010:WorkflowViewState.IdRef="Switch`1_1">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+        <Sequence x:Key="Monday" sap:VirtualizedContainerService.HintSize="827.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_87">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence sap:VirtualizedContainerService.HintSize="785.333333333333,4449.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_86">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Sequence sap:VirtualizedContainerService.HintSize="743.333333333333,1452" sap2010:WorkflowViewState.IdRef="Sequence_76">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="variable1" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="496.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_21">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vBsDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-1).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="496.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_31" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_73">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_32" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="496.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_32" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_74">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_33" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="496.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_33" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_75">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_34" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence CIMB" sap:VirtualizedContainerService.HintSize="743.333333333333,985.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_79">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="701.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_22">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="701.333333333333,791.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_34" Values="[Directory.GetFiles(in_Config(&quot;vMrCIMBFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="664.666666666667,652.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_78">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_TransactionItem]" DisplayName="For Each Row" sap:VirtualizedContainerService.HintSize="622.666666666667,560.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_4">
+                        <ui:ForEachRow.Body>
+                          <ActivityAction x:TypeArguments="sd:DataRow">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="572,408" sap2010:WorkflowViewState.IdRef="Sequence_77">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <If Condition="[Path.GetFileName(item.ToString).Contains(row(4).ToString)]" sap:VirtualizedContainerService.HintSize="530,316" sap2010:WorkflowViewState.IdRef="If_5">
+                                <If.Then>
+                                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_35" Overwrite="True" Path="[in_Config(&quot;vMrCIMBFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                                </If.Then>
+                              </If>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEachRow.Body>
+                      </ui:ForEachRow>
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence AliPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_81">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_23">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_35" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_80">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vAlipayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_36" Overwrite="True" Path="[in_Config(&quot;vMrAlipayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence TnG" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_83">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_24">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_36" Values="[Directory.GetFiles(in_Config(&quot;vMrTngFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_82">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vTngMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_37" Overwrite="True" Path="[in_Config(&quot;vMrTngFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence JomPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_85">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_25">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_37" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_84">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vJompayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_38" Overwrite="True" Path="[in_Config(&quot;vMrJompayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+          </Sequence>
+        </Sequence>
+        <Sequence x:Key="Tuesday" sap:VirtualizedContainerService.HintSize="827.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_102">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence sap:VirtualizedContainerService.HintSize="785.333333333333,4449.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_101">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Sequence sap:VirtualizedContainerService.HintSize="743.333333333333,1452" sap2010:WorkflowViewState.IdRef="Sequence_91">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="variable1" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_26">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vBsDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-1).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_38" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_88">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_39" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_39" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_89">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_40" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_40" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_90">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_41" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence CIMB" sap:VirtualizedContainerService.HintSize="743.333333333333,985.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_94">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="701.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_27">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="701.333333333333,791.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_41" Values="[Directory.GetFiles(in_Config(&quot;vMrCIMBFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="664.666666666667,652.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_93">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_TransactionItem]" DisplayName="For Each Row" sap:VirtualizedContainerService.HintSize="622.666666666667,560.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_5">
+                        <ui:ForEachRow.Body>
+                          <ActivityAction x:TypeArguments="sd:DataRow">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="572,408" sap2010:WorkflowViewState.IdRef="Sequence_92">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <If Condition="[Path.GetFileName(item.ToString).Contains(row(4).ToString)]" sap:VirtualizedContainerService.HintSize="530,316" sap2010:WorkflowViewState.IdRef="If_6">
+                                <If.Then>
+                                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_42" Overwrite="True" Path="[in_Config(&quot;vMrCIMBFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                                </If.Then>
+                              </If>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEachRow.Body>
+                      </ui:ForEachRow>
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence AliPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_96">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_28">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_42" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_95">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vAlipayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_43" Overwrite="True" Path="[in_Config(&quot;vMrAlipayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence TnG" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_98">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_29">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_43" Values="[Directory.GetFiles(in_Config(&quot;vMrTngFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_97">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vTngMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_44" Overwrite="True" Path="[in_Config(&quot;vMrTngFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence JomPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_100">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_30">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_44" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_99">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vJompayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_45" Overwrite="True" Path="[in_Config(&quot;vMrJompayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+          </Sequence>
+        </Sequence>
+        <Sequence x:Key="Wednesday" sap:VirtualizedContainerService.HintSize="827.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_117">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence sap:VirtualizedContainerService.HintSize="785.333333333333,4449.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_116">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Sequence sap:VirtualizedContainerService.HintSize="743.333333333333,1452" sap2010:WorkflowViewState.IdRef="Sequence_106">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="variable1" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_31">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vBsDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-1).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_45" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_103">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_46" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_46" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_104">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_47" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_47" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_105">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_48" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence CIMB" sap:VirtualizedContainerService.HintSize="743.333333333333,985.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_109">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="701.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_32">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="701.333333333333,791.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_48" Values="[Directory.GetFiles(in_Config(&quot;vMrCIMBFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="664.666666666667,652.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_108">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_TransactionItem]" DisplayName="For Each Row" sap:VirtualizedContainerService.HintSize="622.666666666667,560.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_6">
+                        <ui:ForEachRow.Body>
+                          <ActivityAction x:TypeArguments="sd:DataRow">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="572,408" sap2010:WorkflowViewState.IdRef="Sequence_107">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <If Condition="[Path.GetFileName(item.ToString).Contains(row(4).ToString)]" sap:VirtualizedContainerService.HintSize="530,316" sap2010:WorkflowViewState.IdRef="If_7">
+                                <If.Then>
+                                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_49" Overwrite="True" Path="[in_Config(&quot;vMrCIMBFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                                </If.Then>
+                              </If>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEachRow.Body>
+                      </ui:ForEachRow>
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence AliPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_111">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_33">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_49" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_110">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vAlipayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_50" Overwrite="True" Path="[in_Config(&quot;vMrAlipayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence TnG" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_113">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_34">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_50" Values="[Directory.GetFiles(in_Config(&quot;vMrTngFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_112">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vTngMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_51" Overwrite="True" Path="[in_Config(&quot;vMrTngFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence JomPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_115">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_35">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_51" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_114">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vJompayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_52" Overwrite="True" Path="[in_Config(&quot;vMrJompayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+          </Sequence>
+        </Sequence>
+        <Sequence x:Key="Thursday" sap:VirtualizedContainerService.HintSize="827.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_132">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence sap:VirtualizedContainerService.HintSize="785.333333333333,4449.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_131">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Sequence sap:VirtualizedContainerService.HintSize="743.333333333333,1452" sap2010:WorkflowViewState.IdRef="Sequence_121">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="variable1" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_36">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vBsDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-1).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_52" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_118">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_53" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_53" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_119">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_54" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_54" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_120">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_55" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence CIMB" sap:VirtualizedContainerService.HintSize="743.333333333333,985.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_124">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="701.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_37">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="701.333333333333,791.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_55" Values="[Directory.GetFiles(in_Config(&quot;vMrCIMBFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="664.666666666667,652.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_123">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_TransactionItem]" DisplayName="For Each Row" sap:VirtualizedContainerService.HintSize="622.666666666667,560.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
+                        <ui:ForEachRow.Body>
+                          <ActivityAction x:TypeArguments="sd:DataRow">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="572,408" sap2010:WorkflowViewState.IdRef="Sequence_122">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <If Condition="[Path.GetFileName(item.ToString).Contains(row(4).ToString)]" sap:VirtualizedContainerService.HintSize="530,316" sap2010:WorkflowViewState.IdRef="If_8">
+                                <If.Then>
+                                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_56" Overwrite="True" Path="[in_Config(&quot;vMrCIMBFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                                </If.Then>
+                              </If>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEachRow.Body>
+                      </ui:ForEachRow>
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence AliPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_126">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_38">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_56" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_125">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vAlipayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_57" Overwrite="True" Path="[in_Config(&quot;vMrAlipayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence TnG" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_128">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_39">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_57" Values="[Directory.GetFiles(in_Config(&quot;vMrTngFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_127">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vTngMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_58" Overwrite="True" Path="[in_Config(&quot;vMrTngFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence JomPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_130">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_40">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_58" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_129">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vJompayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_59" Overwrite="True" Path="[in_Config(&quot;vMrJompayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+          </Sequence>
+        </Sequence>
+        <Sequence x:Key="Friday" sap:VirtualizedContainerService.HintSize="827.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_147">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence sap:VirtualizedContainerService.HintSize="785.333333333333,4449.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_146">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Sequence sap:VirtualizedContainerService.HintSize="743.333333333333,1452" sap2010:WorkflowViewState.IdRef="Sequence_136">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="variable1" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_41">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vBsDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-1).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_59" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_133">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_60" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_60" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_134">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_61" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_61" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_135">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_62" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence CIMB" sap:VirtualizedContainerService.HintSize="743.333333333333,985.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_139">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="701.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_42">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="701.333333333333,791.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_62" Values="[Directory.GetFiles(in_Config(&quot;vMrCIMBFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="664.666666666667,652.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_138">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_TransactionItem]" DisplayName="For Each Row" sap:VirtualizedContainerService.HintSize="622.666666666667,560.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_8">
+                        <ui:ForEachRow.Body>
+                          <ActivityAction x:TypeArguments="sd:DataRow">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="572,408" sap2010:WorkflowViewState.IdRef="Sequence_137">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <If Condition="[Path.GetFileName(item.ToString).Contains(row(4).ToString)]" sap:VirtualizedContainerService.HintSize="530,316" sap2010:WorkflowViewState.IdRef="If_9">
+                                <If.Then>
+                                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_63" Overwrite="True" Path="[in_Config(&quot;vMrCIMBFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                                </If.Then>
+                              </If>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEachRow.Body>
+                      </ui:ForEachRow>
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence AliPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_141">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_43">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_63" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_140">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vAlipayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_64" Overwrite="True" Path="[in_Config(&quot;vMrAlipayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence TnG" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_143">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_44">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_64" Values="[Directory.GetFiles(in_Config(&quot;vMrTngFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_142">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vTngMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_65" Overwrite="True" Path="[in_Config(&quot;vMrTngFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence JomPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_145">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_45">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_65" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_144">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vJompayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_66" Overwrite="True" Path="[in_Config(&quot;vMrJompayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+          </Sequence>
+        </Sequence>
+        <Sequence x:Key="Saturday" sap:VirtualizedContainerService.HintSize="827.333333333333,5085.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_65">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence sap:VirtualizedContainerService.HintSize="785.333333333333,4993.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_64">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:Int32" Name="vMonth" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Sequence sap:VirtualizedContainerService.HintSize="743.333333333333,1996" sap2010:WorkflowViewState.IdRef="Sequence_56">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="variable1" />
+                <Variable x:TypeArguments="x:String" Name="vMonthPath" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="496.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_15">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vBsDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-1).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Assign sap:VirtualizedContainerService.HintSize="496.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_51">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Int32">[vMonth]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Int32">[Convert.ToInt32(vBsDate.Substring(2,2))]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <Switch x:TypeArguments="x:Int32" DisplayName="Switch" Expression="[vMonth]" sap:VirtualizedContainerService.HintSize="496.666666666667,402" sap2010:WorkflowViewState.IdRef="Switch`1_4">
+                <Assign x:Key="1" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_52">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">1.Jan'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="2" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_53">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">2.Feb'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="3" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_54">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">3.Mar'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="4" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_55">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">4.Apr'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="5" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_56">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">5.May'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="6" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_57">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">6.Jun'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="7" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_58">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">7.Jul'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="8" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_59">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">8.Aug'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="9" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_60">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">9.Sep'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="10" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_61">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">10.Oct'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="11" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_62">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">11.Nov'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <Assign x:Key="12" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_63">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:String">[vMonthPath]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:String">12.Dec'20\</InArgument>
+                  </Assign.Value>
+                </Assign>
+              </Switch>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="496.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_21" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString + vMonthPath, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_53">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_22" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString + vMonthPath + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="496.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_22" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString + vMonthPath, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_54">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_23" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString + vMonthPath + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="496.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_23" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString + vMonthPath, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_55">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_24" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString  + vMonthPath + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence CIMB" sap:VirtualizedContainerService.HintSize="743.333333333333,985.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_59">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="701.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_16">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="701.333333333333,791.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_24" Values="[Directory.GetFiles(in_Config(&quot;vMrCIMBFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="664.666666666667,652.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_58">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_TransactionItem]" DisplayName="For Each Row" sap:VirtualizedContainerService.HintSize="622.666666666667,560.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
+                        <ui:ForEachRow.Body>
+                          <ActivityAction x:TypeArguments="sd:DataRow">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="572,408" sap2010:WorkflowViewState.IdRef="Sequence_57">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <If Condition="[Path.GetFileName(item.ToString).Contains(row(4).ToString)]" sap:VirtualizedContainerService.HintSize="530,316" sap2010:WorkflowViewState.IdRef="If_4">
+                                <If.Then>
+                                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_25" Overwrite="True" Path="[in_Config(&quot;vMrCIMBFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                                </If.Then>
+                              </If>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEachRow.Body>
+                      </ui:ForEachRow>
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence AliPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_61">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_17">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_25" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_60">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vAlipayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_26" Overwrite="True" Path="[in_Config(&quot;vMrAlipayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence TnG" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_63">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_18">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_26" Values="[Directory.GetFiles(in_Config(&quot;vMrTngFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_62">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vTngMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_27" Overwrite="True" Path="[in_Config(&quot;vMrTngFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence JomPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_72">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_20">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_30" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_71">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vJompayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_31" Overwrite="True" Path="[in_Config(&quot;vMrJompayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+          </Sequence>
+        </Sequence>
+        <Sequence x:Key="Sunday" sap:VirtualizedContainerService.HintSize="827.333333333333,69.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_162">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence sap:VirtualizedContainerService.HintSize="785.333333333333,4449.33333333333" sap2010:WorkflowViewState.IdRef="Sequence_161">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Sequence sap:VirtualizedContainerService.HintSize="743.333333333333,1452" sap2010:WorkflowViewState.IdRef="Sequence_151">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="variable1" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_46">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vBsDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-1).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_66" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_148">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_67" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathFWH&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_67" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_149">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_68" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathAWG&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_68" Values="[Directory.GetFiles(in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString, vBsDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_150">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBBsTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_69" Overwrite="True" Path="[in_Config(&quot;vBsCIMBFolderPathGENM&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence CIMB" sap:VirtualizedContainerService.HintSize="743.333333333333,985.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_154">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="701.333333333333,62" sap2010:WorkflowViewState.IdRef="Assign_47">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="701.333333333333,791.333333333333" sap2010:WorkflowViewState.IdRef="ForEach`1_69" Values="[Directory.GetFiles(in_Config(&quot;vMrCIMBFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="664.666666666667,652.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_153">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[in_TransactionItem]" DisplayName="For Each Row" sap:VirtualizedContainerService.HintSize="622.666666666667,560.666666666667" sap2010:WorkflowViewState.IdRef="ForEachRow_9">
+                        <ui:ForEachRow.Body>
+                          <ActivityAction x:TypeArguments="sd:DataRow">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="572,408" sap2010:WorkflowViewState.IdRef="Sequence_152">
+                              <sap:WorkflowViewStateService.ViewState>
+                                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                </scg:Dictionary>
+                              </sap:WorkflowViewStateService.ViewState>
+                              <If Condition="[Path.GetFileName(item.ToString).Contains(row(4).ToString)]" sap:VirtualizedContainerService.HintSize="530,316" sap2010:WorkflowViewState.IdRef="If_10">
+                                <If.Then>
+                                  <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vCIMBMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_70" Overwrite="True" Path="[in_Config(&quot;vMrCIMBFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                                </If.Then>
+                              </If>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEachRow.Body>
+                      </ui:ForEachRow>
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence AliPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_156">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_48">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_70" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_155">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vAlipayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_71" Overwrite="True" Path="[in_Config(&quot;vMrAlipayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence TnG" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_158">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_49">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_71" Values="[Directory.GetFiles(in_Config(&quot;vMrTngFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_157">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vTngMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_72" Overwrite="True" Path="[in_Config(&quot;vMrTngFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+            <Sequence DisplayName="Sequence JomPay" sap:VirtualizedContainerService.HintSize="743.333333333333,586.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_160">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="vMrDate" />
+              </Sequence.Variables>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <Assign sap:VirtualizedContainerService.HintSize="462.666666666667,62" sap2010:WorkflowViewState.IdRef="Assign_50">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[vMrDate]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[DateTime.ParseExact(in_Config("vProcessingDate").ToString, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).AddDays(-2).ToString("dd/MM/yyyy").Replace("/","")]</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" DisplayName="For Each" sap:VirtualizedContainerService.HintSize="462.666666666667,392.666666666667" sap2010:WorkflowViewState.IdRef="ForEach`1_72" Values="[Directory.GetFiles(in_Config(&quot;vMrAlipayFolderPath&quot;).ToString, vMrDate + &quot;*&quot;)]">
+                <ui:ForEach.Body>
+                  <ActivityAction x:TypeArguments="x:Object">
+                    <ActivityAction.Argument>
+                      <DelegateInArgument x:TypeArguments="x:Object" Name="item" />
+                    </ActivityAction.Argument>
+                    <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="426,254" sap2010:WorkflowViewState.IdRef="Sequence_159">
+                      <sap:WorkflowViewStateService.ViewState>
+                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                        </scg:Dictionary>
+                      </sap:WorkflowViewStateService.ViewState>
+                      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[in_Config(&quot;vJompayMrTempFolder&quot;).ToString + Path.GetFileName(item.ToString)]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="384,162" sap2010:WorkflowViewState.IdRef="CopyFile_73" Overwrite="True" Path="[in_Config(&quot;vMrJompayFolderPath&quot;).ToString + Path.GetFileName(item.ToString)]" />
+                    </Sequence>
+                  </ActivityAction>
+                </ui:ForEach.Body>
+              </ui:ForEach>
+            </Sequence>
+          </Sequence>
+        </Sequence>
+      </Switch>
+    </Sequence>
+    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="909.333333333333,349.333333333333" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+      <ui:CommentOut.Body>
+        <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="418,270.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_163">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <Sequence DisplayName="Sequence Open MS Access" sap:VirtualizedContainerService.HintSize="376,178.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_70">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:StartProcess Arguments="{x:Null}" WorkingDirectory="{x:Null}" DisplayName="Start Process" FileName="C:\Users\Mohamad.Mazlan\Desktop\environment-master\CIMB Matching.accdb" sap:VirtualizedContainerService.HintSize="334,86.6666666666667" sap2010:WorkflowViewState.IdRef="StartProcess_1" />
+          </Sequence>
+        </Sequence>
+      </ui:CommentOut.Body>
+    </ui:CommentOut>
+  </Sequence>
+</Activity>
